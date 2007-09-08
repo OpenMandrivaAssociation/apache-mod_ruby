@@ -6,7 +6,7 @@
 Summary:	Mod_ruby is a DSO module for the apache web server
 Name:		apache-%{mod_name}
 Version:	1.2.6
-Release:	%mkrel 2
+Release:	%mkrel 3
 Group:		System/Servers
 License:	BSD
 URL:		http://www.modruby.net/
@@ -22,8 +22,6 @@ Requires:	apache-conf >= 2.2.0
 Requires:	apache >= 2.2.0
 BuildRequires:	apache-devel >= 2.2.0
 BuildRequires:	file
-Provides:	apache2-mod_ruby
-Obsoletes:	apache2-mod_ruby
 Epoch:		1
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
