@@ -12,6 +12,7 @@ License:	BSD
 URL:		http://www.modruby.net/
 Source0:	%{mod_name}-%{version}.tar.gz
 Source1:	%{mod_conf}
+Patch0:		mod_ruby-build_fix.diff
 BuildRequires:	ruby-devel
 Requires:	ruby
 Requires(pre): rpm-helper
@@ -33,6 +34,7 @@ will start up much faster than without mod_ruby.
 %prep
 
 %setup -q -n %{mod_name}-%{version}
+%patch0 -p0
 
 cp %{SOURCE1} %{mod_conf}
 
@@ -41,14 +43,16 @@ find . -type f|xargs file|grep 'CRLF'|cut -d: -f1|xargs perl -p -i -e 's/\r//'
 find . -type f|xargs file|grep 'text'|cut -d: -f1|xargs perl -p -i -e 's/\r//'
 
 %build
-./configure.rb \
+rm -f ./configure.rb
+ruby ./autoconf.rb
+ruby ./configure.rb \
     --with-apxs=%{_sbindir}/apxs \
     --with-apr-includes="`apr-1-config --includes|sed -e 's/-I//'`"
 
 %make
 
 %install
-[ "%{buildroot}" != "/" ] && rm -rf %{buildroot}
+rm -rf %{buildroot}
 
 install -d %{buildroot}%{_libdir}/apache
 install -d %{buildroot}%{_libdir}/apache-extramodules
@@ -59,12 +63,8 @@ make DESTDIR="%{buildroot}" install
 mv %{buildroot}%{_libdir}/apache/%{mod_so} %{buildroot}%{_libdir}/apache-extramodules
 install -m0644 %{mod_conf} %{buildroot}%{_sysconfdir}/httpd/modules.d/%{mod_conf}
 
-install -d %{buildroot}%{_var}/www/html/addon-modules
-ln -s ../../../..%{_docdir}/%{name}-%{version} %{buildroot}%{_var}/www/html/addon-modules/%{name}-%{version}
-
 # fix weird stuff...
 chmod 755 %{buildroot}%{_libdir}/apache-extramodules/%{mod_so}
-strip %{buildroot}%{_libdir}/apache-extramodules/%{mod_so}
 
 %post
 if [ -f %{_var}/lock/subsys/httpd ]; then
@@ -79,14 +79,11 @@ if [ "$1" = "0" ]; then
 fi
 
 %clean
-[ "%{buildroot}" != "/" ] && rm -rf %{buildroot}
+rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
 %doc ChangeLog COPYING README*
 %attr(0644,root,root) %config(noreplace) %{_sysconfdir}/httpd/modules.d/%{mod_conf}
 %attr(0755,root,root) %{_libdir}/apache-extramodules/%{mod_so}
-%{_var}/www/html/addon-modules/*
 %{_prefix}/lib/ruby
-
-
