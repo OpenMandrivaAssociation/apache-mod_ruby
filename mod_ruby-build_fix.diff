@@ -1,0 +1,16 @@
+--- autoconf.rb	2008-11-08 05:15:36.000000000 +0100
++++ autoconf.rb.oden	2009-06-21 18:49:28.000000000 +0200
+@@ -350,13 +350,6 @@
+   $LDFLAGS = "-link -incremental:no -pdb:none"
+ end
+ $LIBS = CONFIG["LIBS"]
+-$XLDFLAGS = CONFIG["XLDFLAGS"].to_s
+-$XLDFLAGS.gsub!(/-L\./, "")
+-if /mswin32/ !~ RUBY_PLATFORM
+-  $XLDFLAGS += " -L$(libdir)"
+-elsif RUBY_VERSION >= "1.8"
+-  $XLDFLAGS += " #{CONFIG['LIBPATHFLAG'] % '$(libdir)'}"
+-end
+ $DLDFLAGS = CONFIG["DLDFLAGS"]
+ $LDSHARED = CONFIG["LDSHARED"]
+ 
