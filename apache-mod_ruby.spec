@@ -9,7 +9,7 @@ Version:	1.3.0
 Release:	%mkrel 6
 Group:		System/Servers
 License:	BSD
-URL:		http://www.modruby.net/
+URL:		https://www.modruby.net/
 Source0:	%{mod_name}-%{version}.tar.gz
 Source1:	%{mod_conf}
 Patch0:		mod_ruby-build_fix.diff
