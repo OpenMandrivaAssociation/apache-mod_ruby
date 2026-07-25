@@ -6,7 +6,7 @@
 Summary:	DSO module for the apache web server
 Name:		apache-%{mod_name}
 Version:	1.3.0
-Release:	%mkrel 6
+Release:	7
 Group:		System/Servers
 License:	BSD
 URL:		https://www.modruby.net/
